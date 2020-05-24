@@ -1,0 +1,20 @@
+# Created by .ignore support plugin (hsz.mobi)
+### JupyterNotebooks template
+# gitignore template for Jupyter Notebooks
+# website: http://jupyter.org/
+
+.ipynb_checkpoints
+*/.ipynb_checkpoints/*
+
+data/audio
+data/audio_google
+
+.idea
+__pycache__
+
+models/google_hmm.pkl
+
+# Remove previous ipynb_checkpoints
+#   git rm -r .ipynb_checkpoints/
+#
+
