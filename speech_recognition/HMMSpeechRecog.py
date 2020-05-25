@@ -1,6 +1,7 @@
 from python_speech_features import mfcc
 from scipy.io import wavfile
 from hmmlearn import hmm
+from sklearn.metrics import classification_report
 import numpy as np
 import collections
 import pickle
@@ -10,9 +11,10 @@ from pathlib import Path
 
 
 class HMMSpeechRecog(object):
-    def __init__(self, filespath=Path('data/audio'), val_p=0.2):
+    def __init__(self, filespath=Path('data/audio'), val_p=0.2, num_cep=12):
         self.filespath = Path(filespath)
         self.val_p = val_p
+        self.num_cep = num_cep
         self._get_filelist_labels()
         self.features = self._get_features()
         self._get_val_index_end()
@@ -31,7 +33,7 @@ class HMMSpeechRecog(object):
             if n % 10 == 0:
                 print(f'working on file nr {n}: {file}')
             samplerate, d = wavfile.read(file)
-            features.append(mfcc(d, samplerate=samplerate, numcep=6))
+            features.append(mfcc(d, samplerate=samplerate, numcep=self.num_cep))
         if eval:
             return features
 
@@ -48,9 +50,11 @@ class HMMSpeechRecog(object):
 
     def _get_gmmhmmindex_dict(self):
         self.gmmhmmindexdict = {}
+        self.indexgmmhmmdict = {}
         index = 0
         for word in self.spoken:
             self.gmmhmmindexdict[word] = index
+            self.indexgmmhmmdict[index] = word
             index = index + 1
 
     def getTransmatPrior(self, inumstates, ibakisLevel):
@@ -90,7 +94,8 @@ class HMMSpeechRecog(object):
                                                                        self.m_num_of_HMMStates,
                                                                        self.m_num_of_mixtures, self.m_transmatPrior,
                                                                        self.m_startprobPrior, self.m_covarianceType,
-                                                                       self.m_n_iter)
+                                                                       self.m_n_iter,
+                                                                       self.features[0].shape[1])
 
         for i in range(self.val_i_end, len(self.features[self.val_i_end:])):
             for j in range(0, len(self.speechmodels)):
@@ -100,23 +105,26 @@ class HMMSpeechRecog(object):
 
         for speechmodel in self.speechmodels:
             speechmodel.model.fit(speechmodel.traindata)
-        print(f'Training completed -- 7 GMM-HMM models are built for {len(self.spoken)} different types of words')
+        print(f'Training completed -- {len(self.spoken)} GMM-HMM models are built for {len(self.spoken)} different types of words')
 
     def get_accuracy(self):
         self.accuracy = 0.0
         count = 0
+        predicted_labels = []
 
         print("")
         print("Prediction for Testing DataSet:")
 
         for i in range(0, len(self.labels[:self.val_i_end])):
-            print(f"Label {str(i + 1)} : {self.labels[i]}")
-            if self.gmmhmmindexdict[self.labels[i]] == self.m_PredictionlabelList[i]:
+            # print(f"Label {str(i + 1)} : {self.labels[i]}")
+            predicted_label_i=self.m_PredictionlabelList[i]
+            predicted_labels.append(self.indexgmmhmmdict[predicted_label_i])
+            if self.gmmhmmindexdict[self.labels[i]] == predicted_label_i:
                 count = count + 1
 
         accuracy = 100.0 * count / float(len(self.labels[:self.val_i_end]))
-
         print("accuracy =" + str(accuracy))
+        print(classification_report(self.labels[:self.val_i_end], predicted_labels))
 
     def test(self):
         # Testing
@@ -251,28 +259,10 @@ class HMMSpeechRecog(object):
 
 class SpeechModel:
     def __init__(self, Class, label, m_num_of_HMMStates, m_num_of_mixtures, m_transmatPrior, m_startprobPrior,
-                 m_covarianceType='diag', m_n_iter=10):
-        self.traindata = np.zeros((0, 6))
+                 m_covarianceType='diag', m_n_iter=10, n_features_traindata=6):
+        self.traindata = np.zeros((0, n_features_traindata))
         self.Class = Class
         self.label = label
         self.model = hmm.GMMHMM(n_components=m_num_of_HMMStates, n_mix=m_num_of_mixtures,
                                 transmat_prior=m_transmatPrior, startprob_prior=m_startprobPrior,
                                 covariance_type=m_covarianceType, n_iter=m_n_iter)
-
-
-if __name__ == "__main__":
-    model = HMMSpeechRecog()
-    model.train(3, 2)
-    model.test()
-    predicted_labels = model.predict(['data/test_data/apple15.wav'])
-    print(f'predicted label {predicted_labels}')
-
-    model.pickle('models/fruit_hmm.pkl')
-    model2 = HMMSpeechRecog.unpickle('models/fruit_hmm.pkl')
-    predicted_labels2 = model2.predict(['data/test_data/apple15.wav'])
-    print(f'predicted label {predicted_labels2}')
-
-    predicted_labels3 = model2.predict(['data/test_data/output.wav'])
-    print(f'predicted label {predicted_labels3}')
-
-    model2.calc_mean_entropy()
