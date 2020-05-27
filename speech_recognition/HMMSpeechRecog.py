@@ -117,7 +117,7 @@ class HMMSpeechRecog(object):
 
         for i in range(0, len(self.labels[:self.val_i_end])):
             # print(f"Label {str(i + 1)} : {self.labels[i]}")
-            predicted_label_i=self.m_PredictionlabelList[i]
+            predicted_label_i = self.m_PredictionlabelList[i]
             predicted_labels.append(self.indexgmmhmmdict[predicted_label_i])
             if self.gmmhmmindexdict[self.labels[i]] == predicted_label_i:
                 count = count + 1
@@ -174,8 +174,7 @@ class HMMSpeechRecog(object):
     '''Relative Entropyvalues for the 6 columns of the given data and sampled values'''
 
     def relative_entropy_calculator(self, givendata, samplesdata, givendatasigmavals, sampledsigmavals,
-                                    givendatameanvals,
-                                    sampledmeanvals):
+                                    givendatameanvals, sampledmeanvals):
 
         absgivendatasigmavals = [abs(number) for number in givendatasigmavals]
         abssampleddatasigmavals = [abs(number) for number in sampledsigmavals]

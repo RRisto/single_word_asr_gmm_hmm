@@ -14,4 +14,7 @@ print(f'predicted label {predicted_labels2}')
 predicted_labels3 = model2.predict(['data/test_data/output.wav'])
 print(f'predicted label {predicted_labels3}')
 
+predicted_labels4 = model2.predict(['data/test_data/pineapple_risto3.wav'])
+print(f'predicted label {predicted_labels4}')
+
 # model2.calc_mean_entropy()
