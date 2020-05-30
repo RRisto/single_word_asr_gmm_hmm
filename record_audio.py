@@ -1,38 +1,41 @@
 import pyaudio
 import wave
 
-CHUNK = 1024
-FORMAT = pyaudio.paInt16
-CHANNELS = 1
-RATE = 16000
-RECORD_SECONDS = 2
-WAVE_OUTPUT_FILENAME = "data/test_data/output.wav"
 
-p = pyaudio.PyAudio()
+def write_wave(filename, channels, rate, sample_size, frames):
+    wf = wave.open(filename, 'wb')
+    wf.setnchannels(channels)
+    wf.setsampwidth(sample_size)
+    wf.setframerate(rate)
+    wf.writeframes(b''.join(frames))
+    wf.close()
 
-stream = p.open(format=FORMAT,
-                channels=CHANNELS,
-                rate=RATE,
-                input=True,
-                frames_per_buffer=CHUNK)
 
-print("* recording")
+def record_save_audio(wave_output_filename, chunk=1024, format=pyaudio.paInt16, channels=1, rate=16000,
+                      record_seconds=2):
+    p = pyaudio.PyAudio()
+    stream = p.open(format=format,
+                    channels=channels,
+                    rate=rate,
+                    input=True,
+                    frames_per_buffer=chunk)
+    print("* recording")
+    frames = []
 
-frames = []
+    for i in range(0, int(rate / chunk * record_seconds)):
+        data = stream.read(chunk)
+        frames.append(data)
 
-for i in range(0, int(RATE / CHUNK * RECORD_SECONDS)):
-    data = stream.read(CHUNK)
-    frames.append(data)
+    print("* done recording")
 
-print("* done recording")
+    stream.stop_stream()
+    stream.close()
+    p.terminate()
 
-stream.stop_stream()
-stream.close()
-p.terminate()
+    write_wave(wave_output_filename, channels, rate, p.get_sample_size(format), frames)
 
-wf = wave.open(WAVE_OUTPUT_FILENAME, 'wb')
-wf.setnchannels(CHANNELS)
-wf.setsampwidth(p.get_sample_size(FORMAT))
-wf.setframerate(RATE)
-wf.writeframes(b''.join(frames))
-wf.close()
+
+if __name__ == '__main__':
+    RECORD_SECONDS = 2
+    WAVE_OUTPUT_FILENAME = "data/test_data/output.wav"
+    record_save_audio(WAVE_OUTPUT_FILENAME, record_seconds=RECORD_SECONDS)
