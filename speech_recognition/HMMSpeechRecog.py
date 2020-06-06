@@ -1,4 +1,4 @@
-from python_speech_features import mfcc
+from python_speech_features import mfcc, delta
 from scipy.io import wavfile
 from hmmlearn import hmm
 from sklearn.metrics import classification_report
@@ -25,7 +25,7 @@ class HMMSpeechRecog(object):
         self.labels = [file.parent.stem for file in self.fpaths]
         self.spoken = list(set(self.labels))
 
-    def _get_features(self, fpaths=None, eval=False):
+    def _get_features(self, fpaths=None, eval=False, num_delta=5):
         features = []
         if fpaths is None:
             fpaths = self.fpaths
@@ -33,7 +33,9 @@ class HMMSpeechRecog(object):
             if n % 10 == 0:
                 print(f'working on file nr {n}: {file}')
             samplerate, d = wavfile.read(file)
-            features.append(mfcc(d, samplerate=samplerate, numcep=self.num_cep))
+            mfcc_features=mfcc(d, samplerate=samplerate, numcep=self.num_cep)
+            delta_features=delta(mfcc_features, num_delta)
+            features.append(np.append(mfcc_features, delta_features, 1))
         if eval:
             return features
 
