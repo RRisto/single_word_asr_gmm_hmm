@@ -33,8 +33,8 @@ class HMMSpeechRecog(object):
             if n % 10 == 0:
                 print(f'working on file nr {n}: {file}')
             samplerate, d = wavfile.read(file)
-            mfcc_features=mfcc(d, samplerate=samplerate, numcep=self.num_cep)
-            delta_features=delta(mfcc_features, num_delta)
+            mfcc_features = mfcc(d, samplerate=samplerate, numcep=self.num_cep)
+            delta_features = delta(mfcc_features, num_delta)
             features.append(np.append(mfcc_features, delta_features, 1))
         if eval:
             return features
@@ -107,7 +107,8 @@ class HMMSpeechRecog(object):
 
         for speechmodel in self.speechmodels:
             speechmodel.model.fit(speechmodel.traindata)
-        print(f'Training completed -- {len(self.spoken)} GMM-HMM models are built for {len(self.spoken)} different types of words')
+        print(f'Training completed -- {len(self.spoken)} GMM-HMM models are built for {len(
+            self.spoken)} different types of words')
 
     def get_accuracy(self):
         self.accuracy = 0.0
