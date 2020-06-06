@@ -107,8 +107,7 @@ class HMMSpeechRecog(object):
 
         for speechmodel in self.speechmodels:
             speechmodel.model.fit(speechmodel.traindata)
-        print(f'Training completed -- {len(self.spoken)} GMM-HMM models are built for {len(
-            self.spoken)} different types of words')
+        print(f'Training completed -- {len(self.spoken)} GMM-HMM models are built for {len(self.spoken)} different types of words')
 
     def get_accuracy(self):
         self.accuracy = 0.0
