@@ -1,13 +1,15 @@
-from python_speech_features import mfcc, delta
-from scipy.io import wavfile
-from hmmlearn import hmm
-from sklearn.metrics import classification_report
-import numpy as np
 import collections
 import pickle
+import pandas as pd
+import numpy as np
 import scipy.stats as sp
+from scipy.io import wavfile
 from operator import itemgetter
 from pathlib import Path
+
+from hmmlearn import hmm
+from python_speech_features import mfcc, delta
+from sklearn.metrics import classification_report, confusion_matrix
 
 
 class HMMSpeechRecog(object):
@@ -110,26 +112,38 @@ class HMMSpeechRecog(object):
         n_spoken = len(self.spoken)
         print(f'Training completed -- {n_spoken} GMM-HMM models are built for {n_spoken} different types of words')
 
-    def get_accuracy(self):
+    def get_confusion_matrix(self, real_y, pred_y, labels):
+        conf_mat = confusion_matrix(real_y, pred_y, labels=labels)
+        df_conf_mat = pd.DataFrame(conf_mat)
+        df_conf_mat.columns = labels
+        df_conf_mat.index = labels
+        return df_conf_mat
+
+    def get_accuracy(self, save_path=None):
         self.accuracy = 0.0
         count = 0
         predicted_labels = []
 
         print("")
-        print("Prediction for Testing DataSet:")
+        print("Prediction for test set:")
 
         for i in range(0, len(self.labels[:self.val_i_end])):
-            # print(f"Label {str(i + 1)} : {self.labels[i]}")
             predicted_label_i = self.m_PredictionlabelList[i]
             predicted_labels.append(self.indexgmmhmmdict[predicted_label_i])
             if self.gmmhmmindexdict[self.labels[i]] == predicted_label_i:
                 count = count + 1
 
-        accuracy = 100.0 * count / float(len(self.labels[:self.val_i_end]))
-        print("accuracy =" + str(accuracy))
-        print(classification_report(self.labels[:self.val_i_end], predicted_labels))
+        report = classification_report(self.labels[:self.val_i_end], predicted_labels)
+        df_conf_mat = self.get_confusion_matrix(self.labels[:self.val_i_end], predicted_labels,
+                                                labels=list(set(list(self.labels[:self.val_i_end]) + predicted_labels)))
+        print(report)
+        print(df_conf_mat.to_string())
+        if save_path is not None:
+            Path(save_path).write_text(f'nr of files in test set: {count}\n{report}'
+                                       f'\nConfusion matrix (y-axis real label, x-axis predicted label):\n'
+                                       f'{df_conf_mat.to_string()}')
 
-    def test(self):
+    def test(self, save_path=None):
         # Testing
         self.m_PredictionlabelList = []
 
@@ -139,10 +153,10 @@ class HMMSpeechRecog(object):
                 scores.append(speechmodel.model.score(self.features[i]))
             id = scores.index(max(scores))
             self.m_PredictionlabelList.append(self.speechmodels[id].Class)
-            print(str(np.round(scores, 3)) + " " + str(max(np.round(scores, 3))) + " " + ":" + self.speechmodels[
-                id].label)
+            print(str(np.round(scores, 3)) + " " + str(max(np.round(scores, 3))) + " " + ":" +
+                  self.speechmodels[id].label)
 
-        self.get_accuracy()
+        self.get_accuracy(save_path=save_path)
 
     def predict(self, files):
         features = self._get_features(files, eval=True)
@@ -218,8 +232,7 @@ class HMMSpeechRecog(object):
             GivenDataEntropyVals = self.entropy_calculator(speechmodel.traindata, meanvals, meanvals)
             SampledValuesEntropyVals = self.entropy_calculator(samplesdata, sampledmeanvals, sampledsigmavals)
             RelativeEntropy = self.relative_entropy_calculator(speechmodel.traindata, samplesdata, sigmavals,
-                                                               sampledsigmavals,
-                                                               meanvals, sampledmeanvals)
+                                                               sampledsigmavals, meanvals, sampledmeanvals)
 
             print("MeanforGivenDataValues:")
             roundedmeanvals = np.round(meanvals, 3)
