@@ -10,7 +10,7 @@ I've refactored code and added some more features:
 Trained models are in models/ directory, If you want to use them see example predict_google.py. 
 You can record your own voice using record_test_audio.py
 
-##Training
+## Training
 
 - Download speech data (like [Speech Command Dataset](https://www.kaggle.com/c/tensorflow-speech-recognition-challenge/data)).
 Data should be in folders, each folder should have a name of the label/command/word said on files in particual directory
