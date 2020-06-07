@@ -30,5 +30,5 @@ If you wan to align data and use it for training:
   /path/to/librispeech/lexicon.txt /path/to/aligned/dataset This part takes few hours (in usual Windows laptop)
  - Run 1.1_generate_aligned_audio_files_risto.ipynb - this will create chunks from original audio which contain only 
  part where command was said
- - Train new model example is in train_hmm_google_segmented.py
+ - Train new model example is in train_hmm_google_aligned.py
   

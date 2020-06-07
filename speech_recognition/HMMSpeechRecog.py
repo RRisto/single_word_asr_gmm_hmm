@@ -8,15 +8,17 @@ from operator import itemgetter
 from pathlib import Path
 
 from hmmlearn import hmm
-from python_speech_features import mfcc, delta
+from python_speech_features import mfcc, delta, logfbank
 from sklearn.metrics import classification_report, confusion_matrix
+from sklearn.preprocessing import normalize
 
 
 class HMMSpeechRecog(object):
-    def __init__(self, filespath=Path('data/audio'), val_p=0.2, num_cep=12):
+    def __init__(self, filespath=Path('data/audio'), val_p=0.2, num_cep=12, add_mfcc_delta=True):
         self.filespath = Path(filespath)
         self.val_p = val_p
         self.num_cep = num_cep
+        self.add_mfcc_delta = add_mfcc_delta
         self._get_filelist_labels()
         self.features = self._get_features()
         self._get_val_index_end()
@@ -34,10 +36,12 @@ class HMMSpeechRecog(object):
         for n, file in enumerate(fpaths):
             if n % 10 == 0:
                 print(f'working on file nr {n}: {file}')
-            samplerate, d = wavfile.read(file)
-            mfcc_features = mfcc(d, samplerate=samplerate, numcep=self.num_cep)
-            delta_features = delta(mfcc_features, num_delta)
-            features.append(np.append(mfcc_features, delta_features, 1))
+            samplerate, signal = wavfile.read(file)
+            mfcc_features = mfcc(signal, samplerate=samplerate, numcep=self.num_cep)
+            if self.add_mfcc_delta:
+                delta_features = delta(mfcc_features, num_delta)
+                mfcc_features = np.append(mfcc_features, delta_features, 1)
+            features.append(mfcc_features)
         if eval:
             return features
 

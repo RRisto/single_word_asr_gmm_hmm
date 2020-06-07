@@ -1,0 +1,26 @@
+nr of files in test set: 3336
+              precision    recall  f1-score   support
+
+        down       0.93      0.82      0.87       488
+          go       0.75      0.90      0.82       471
+        left       0.95      0.82      0.88       479
+          no       0.87      0.84      0.85       459
+       right       0.90      0.96      0.93       502
+        stop       0.94      0.88      0.90       480
+          up       0.82      0.88      0.84       450
+         yes       0.92      0.95      0.94       462
+
+    accuracy                           0.88      3791
+   macro avg       0.88      0.88      0.88      3791
+weighted avg       0.89      0.88      0.88      3791
+
+Confusion matrix (y-axis real label, x-axis predicted label):
+       right  stop   no  left  yes  down   go   up
+right    480     2    2     3    2     2    5    6
+stop       5   420    1     1    4     3   12   34
+no         6     1  386     3    2     8   49    4
+left      20     4    6   395   20     6    9   19
+yes        4     2    5     6  438     1    1    5
+down       5     7   20     0    4   399   41   12
+go         3     1   23     0    1    10  424    9
+up        11    12    1     6    3     2   21  394
