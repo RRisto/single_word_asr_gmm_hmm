@@ -33,9 +33,3 @@ def record_save_audio(wave_output_filename, chunk=1024, format=pyaudio.paInt16, 
     p.terminate()
 
     write_wave(wave_output_filename, channels, rate, p.get_sample_size(format), frames)
-
-
-if __name__ == '__main__':
-    RECORD_SECONDS = 2
-    WAVE_OUTPUT_FILENAME = "data/test_data/output.wav"
-    record_save_audio(WAVE_OUTPUT_FILENAME, record_seconds=RECORD_SECONDS)
