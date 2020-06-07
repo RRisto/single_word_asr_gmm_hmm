@@ -8,9 +8,8 @@ from operator import itemgetter
 from pathlib import Path
 
 from hmmlearn import hmm
-from python_speech_features import mfcc, delta, logfbank
+from python_speech_features import mfcc, delta
 from sklearn.metrics import classification_report, confusion_matrix
-from sklearn.preprocessing import normalize
 
 
 class HMMSpeechRecog(object):
