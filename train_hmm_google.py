@@ -1,4 +1,4 @@
-from speech_recognition.HMMSpeechRecog import HMMSpeechRecog
+from speech_recogn.HMMSpeechRecog import HMMSpeechRecog
 
 # uses data from https://www.tensorflow.org/datasets/catalog/speech_commands
 model = HMMSpeechRecog(filespath='data/audio_google')

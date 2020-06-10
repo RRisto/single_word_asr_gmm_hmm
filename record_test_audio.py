@@ -1,4 +1,4 @@
-from speech_recognition.record_audio import record_save_audio
+from speech_recogn.record_audio import record_save_audio
 
 RECORD_SECONDS = 2
 WAVE_OUTPUT_FILENAME = "data/test_data/output.wav"

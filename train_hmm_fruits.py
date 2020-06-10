@@ -1,4 +1,4 @@
-from speech_recognition.HMMSpeechRecog import HMMSpeechRecog
+from speech_recogn.HMMSpeechRecog import HMMSpeechRecog
 
 model = HMMSpeechRecog()
 model.train(3, 2)
