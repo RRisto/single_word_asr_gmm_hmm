@@ -1,26 +1,26 @@
-nr of files in test set: 3012
+nr of files in test set: 2921
               precision    recall  f1-score   support
 
-        down       0.81      0.77      0.79       486
-          go       0.67      0.62      0.65       457
-        left       0.72      0.88      0.79       470
-          no       0.65      0.71      0.68       469
-       right       0.99      0.87      0.93       477
-        stop       0.88      0.79      0.83       478
-          up       0.74      0.83      0.78       476
-         yes       0.95      0.88      0.92       478
+        down       0.79      0.70      0.75       437
+          go       0.63      0.63      0.63       473
+        left       0.79      0.80      0.80       497
+          no       0.64      0.74      0.69       474
+       right       0.99      0.84      0.91       478
+        stop       0.83      0.81      0.82       459
+          up       0.63      0.73      0.68       472
+         yes       0.95      0.89      0.92       501
 
-    accuracy                           0.79      3791
-   macro avg       0.80      0.79      0.80      3791
-weighted avg       0.80      0.79      0.80      3791
+    accuracy                           0.77      3791
+   macro avg       0.78      0.77      0.77      3791
+weighted avg       0.78      0.77      0.77      3791
 
 Confusion matrix (y-axis real label, x-axis predicted label):
-        up  stop   go   no  down  left  right  yes
-up     397    31   12    6     6    22      2    0
-stop    59   376   13    7    10    12      0    1
-go      26     6  284   96    30    14      0    1
-no      14     2   74  335    22    19      1    2
-down    13     2   31   42   372    26      0    0
-left    16     3    2   14     7   412      1   15
-right    9     3    3    7     5    33    415    2
-yes      2     3    2   12     6    31      1  421
+       stop   up   go  down  right  yes   no  left
+stop    372   51   13     8      0    0    5    10
+up       43  346   32    12      2    1   12    24
+go       12   31  297    25      0    0  102     6
+down      4   22   44   307      0    1   46    13
+right     2   27    7     9    402    2    6    23
+yes       2   17    2     5      1  448    8    18
+no        5   25   74     8      0    2  351     9
+left      9   34    3    13      1   19   20   398

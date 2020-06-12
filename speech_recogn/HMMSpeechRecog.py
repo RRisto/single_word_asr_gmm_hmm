@@ -19,9 +19,11 @@ class HMMSpeechRecog(object):
         self.num_cep = num_cep
         self.add_mfcc_delta = add_mfcc_delta
         self._get_filelist_labels()
+        self.sample_rate = None
         self.features = self._get_features()
         self._get_val_index_end()
         self._get_gmmhmmindex_dict()
+
 
     def _get_filelist_labels(self):
         self.fpaths = list(self.filespath.rglob('*.wav'))
@@ -35,8 +37,10 @@ class HMMSpeechRecog(object):
         for n, file in enumerate(fpaths):
             if n % 10 == 0:
                 print(f'working on file nr {n}: {file}')
-            samplerate, signal = wavfile.read(file)
-            mfcc_features = mfcc(signal, samplerate=samplerate, numcep=self.num_cep)
+            sample_rate, signal = wavfile.read(file)
+            if self.sample_rate is None:
+                self.sample_rate = sample_rate
+            mfcc_features = mfcc(signal, samplerate=sample_rate, numcep=self.num_cep)
             if self.add_mfcc_delta:
                 delta_features = delta(mfcc_features, num_delta)
                 mfcc_features = np.append(mfcc_features, delta_features, 1)
