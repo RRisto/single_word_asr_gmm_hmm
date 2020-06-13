@@ -1,5 +1,7 @@
 import collections
 import pickle
+
+import librosa
 import pandas as pd
 import numpy as np
 import scipy.stats as sp
@@ -13,17 +15,18 @@ from sklearn.metrics import classification_report, confusion_matrix
 
 
 class HMMSpeechRecog(object):
-    def __init__(self, filespath=Path('data/audio'), val_p=0.2, num_cep=12, add_mfcc_delta=True):
+    def __init__(self, filespath=Path('data/audio'), val_p=0.2, num_cep=12, add_mfcc_delta=True,
+                 add_mfcc_delta_delta=True):
         self.filespath = Path(filespath)
         self.val_p = val_p
         self.num_cep = num_cep
         self.add_mfcc_delta = add_mfcc_delta
+        self.add_mfcc_delta_delta = add_mfcc_delta_delta
         self._get_filelist_labels()
         self.sample_rate = None
         self.features = self._get_features()
         self._get_val_index_end()
         self._get_gmmhmmindex_dict()
-
 
     def _get_filelist_labels(self):
         self.fpaths = list(self.filespath.rglob('*.wav'))
@@ -40,11 +43,17 @@ class HMMSpeechRecog(object):
             sample_rate, signal = wavfile.read(file)
             if self.sample_rate is None:
                 self.sample_rate = sample_rate
+
             mfcc_features = mfcc(signal, samplerate=sample_rate, numcep=self.num_cep)
+            wav_features = np.empty(shape=[mfcc_features.shape[0], 0])
             if self.add_mfcc_delta:
                 delta_features = delta(mfcc_features, num_delta)
-                mfcc_features = np.append(mfcc_features, delta_features, 1)
-            features.append(mfcc_features)
+                wav_features = np.append(wav_features, delta_features, 1)
+            if self.add_mfcc_delta_delta:
+                delta_delta_features = librosa.feature.delta(mfcc_features, order=2)
+                wav_features = np.append(wav_features, delta_delta_features, 1)
+            wav_features = np.append(mfcc_features, wav_features, 1)
+            features.append(wav_features)
         if eval:
             return features
 
