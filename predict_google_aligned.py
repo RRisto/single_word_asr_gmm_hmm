@@ -1,7 +1,7 @@
 from speech_recogn.HMMSpeechRecog import HMMSpeechRecog
 
 model = HMMSpeechRecog.unpickle('models/google_aligned_hmm.pkl')
-predicted_labels = model.predict(['data/test_data/output.wav'])
+predicted_labels = model.predict_files(['data/test_data/output.wav'])
 
 print(f'predicted label {predicted_labels}')
 

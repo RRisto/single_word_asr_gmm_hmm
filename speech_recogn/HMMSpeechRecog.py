@@ -24,7 +24,7 @@ class HMMSpeechRecog(object):
         self.add_mfcc_delta_delta = add_mfcc_delta_delta
         self._get_filelist_labels()
         self.sample_rate = None
-        self.features = self._get_features()
+        self.features = self._read_wav_get_features()
         self._get_val_index_end()
         self._get_gmmhmmindex_dict()
 
@@ -33,27 +33,22 @@ class HMMSpeechRecog(object):
         self.labels = [file.parent.stem for file in self.fpaths]
         self.spoken = list(set(self.labels))
 
-    def _get_features(self, fpaths=None, eval=False, num_delta=5):
-        features = []
+    def read_wav(self, fpath):
+        sample_rate, signal = wavfile.read(fpath)
+        return sample_rate, signal
+
+    def _read_wav_get_features(self, fpaths=None, eval=False, num_delta=5):
         if fpaths is None:
             fpaths = self.fpaths
+        features = []
         for n, file in enumerate(fpaths):
             if n % 10 == 0:
                 print(f'working on file nr {n}: {file}')
-            sample_rate, signal = wavfile.read(file)
+            sample_rate, signal = self.read_wav(file)
             if self.sample_rate is None:
                 self.sample_rate = sample_rate
-
-            mfcc_features = mfcc(signal, samplerate=sample_rate, numcep=self.num_cep)
-            wav_features = np.empty(shape=[mfcc_features.shape[0], 0])
-            if self.add_mfcc_delta:
-                delta_features = delta(mfcc_features, num_delta)
-                wav_features = np.append(wav_features, delta_features, 1)
-            if self.add_mfcc_delta_delta:
-                delta_delta_features = librosa.feature.delta(mfcc_features, order=2)
-                wav_features = np.append(wav_features, delta_delta_features, 1)
-            wav_features = np.append(mfcc_features, wav_features, 1)
-            features.append(wav_features)
+            file_features = self._get_features(signal, sample_rate, num_delta)
+            features.append(file_features)
         if eval:
             return features
 
@@ -64,6 +59,18 @@ class HMMSpeechRecog(object):
         print(f'nr of features {len(features)}')
         print(f'nr of labels {len(self.labels)}')
         return features
+
+    def _get_features(self, signal, sample_rate, num_delta=5):
+        mfcc_features = mfcc(signal, samplerate=sample_rate, numcep=self.num_cep)
+        wav_features = np.empty(shape=[mfcc_features.shape[0], 0])
+        if self.add_mfcc_delta:
+            delta_features = delta(mfcc_features, num_delta)
+            wav_features = np.append(wav_features, delta_features, 1)
+        if self.add_mfcc_delta_delta:
+            delta_delta_features = librosa.feature.delta(mfcc_features, order=2)
+            wav_features = np.append(wav_features, delta_delta_features, 1)
+        wav_features = np.append(mfcc_features, wav_features, 1)
+        return wav_features
 
     def _get_val_index_end(self):
         self.val_i_end = int(len(self.features) * self.val_p)
@@ -174,8 +181,7 @@ class HMMSpeechRecog(object):
 
         self.get_accuracy(save_path=save_path)
 
-    def predict(self, files):
-        features = self._get_features(files, eval=True)
+    def _predict(self, features):
         Model_confidence = collections.namedtuple('model_prediction', ('name', 'score'))
         predicted_labels_confs = []
 
@@ -188,6 +194,16 @@ class HMMSpeechRecog(object):
                 file_scores_confs = sorted(file_scores_confs, key=itemgetter(1), reverse=True)
             predicted_labels_confs.append(file_scores_confs)
 
+        return predicted_labels_confs
+
+    def predict_files(self, files):
+        features = self._read_wav_get_features(files, eval=True)
+        predicted_labels_confs = self._predict(features)
+        return predicted_labels_confs
+
+    def predict_signal(self, signal, sample_rate):
+        features=self._get_features(signal, sample_rate)
+        predicted_labels_confs = self._predict(features)
         return predicted_labels_confs
 
     # Calcuation of  mean ,entropy and relative entropy parameters
@@ -208,7 +224,6 @@ class HMMSpeechRecog(object):
 
     def relative_entropy_calculator(self, givendata, samplesdata, givendatasigmavals, sampledsigmavals,
                                     givendatameanvals, sampledmeanvals):
-
         absgivendatasigmavals = [abs(number) for number in givendatasigmavals]
         abssampleddatasigmavals = [abs(number) for number in sampledsigmavals]
         relativeentropyvals = []
@@ -226,7 +241,6 @@ class HMMSpeechRecog(object):
         return relativeentropyvals
 
     def calc_mean_entropy(self):
-
         for speechmodel in self.speechmodels:
             print("For GMMHMM with label:" + speechmodel.label)
             samplesdata, state_sequence = speechmodel.model.sample(n_samples=len(speechmodel.traindata))
