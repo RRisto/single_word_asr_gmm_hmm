@@ -7,23 +7,27 @@ import speech_recognition as sr
 from speech_recogn.HMMSpeechRecog import HMMSpeechRecog
 
 
-def write_wave(audio, sample_rate):
+def write_wave(audio, sample_rate, filename=None):
     """Writes a .wav binary file.
     Takes path, PCM audio data, and sample rate.
     """
 
-    temp_file = io.BytesIO()
+    if filename is None:
+        temp_file = io.BytesIO()
+    else:
+        temp_file = filename
     with contextlib.closing(wave.open(temp_file, 'wb')) as wf:
         wf.setnchannels(1)
         wf.setsampwidth(2)
         wf.setframerate(sample_rate)
         wf.writeframes(audio)
 
-    temp_file.seek(0)
+    if filename is None:
+        temp_file.seek(0)
     return temp_file
 
 
-def _listen_predict(predict_method, sample_rate, listen_duration_sec=20, phrase_time_limit=2):
+def _listen_predict(predict_method, sample_rate, listen_duration_sec=20, phrase_time_limit=2, filename=None):
     # this class doesnt know anything about the model, just gets reference to predict_method that takes
     # binary .wav file as input
     r = sr.Recognizer()
@@ -35,7 +39,7 @@ def _listen_predict(predict_method, sample_rate, listen_duration_sec=20, phrase_
             try:
                 print('Say something')
                 audio = r.listen(source, phrase_time_limit=phrase_time_limit)  # listen to source
-                audio_file = write_wave(audio.frame_data, audio.sample_rate)
+                audio_file = write_wave(audio.frame_data, audio.sample_rate, filename=filename)
                 print(f'model predicted: {predict_method([audio_file])}')
                 if time.time() > time_end:
                     run = False
@@ -44,6 +48,6 @@ def _listen_predict(predict_method, sample_rate, listen_duration_sec=20, phrase_
                 run = False
 
 
-def listen_predict_mic(model_path, listen_duration_sec=20, phrase_time_limit=1.5):
+def listen_predict_mic(model_path, listen_duration_sec=20, phrase_time_limit=1.5, filename=None):
     model = HMMSpeechRecog.unpickle(model_path)
-    _listen_predict(model.predict_files, model.sample_rate, listen_duration_sec, phrase_time_limit)
+    _listen_predict(model.predict_files, model.sample_rate, listen_duration_sec, phrase_time_limit, filename=filename)

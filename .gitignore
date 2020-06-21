@@ -10,6 +10,7 @@ data/audio
 data/audio_google
 data/audio_google4alignment
 data/audio_google_aligned
+data/audio_google_original
 
 .idea
 __pycache__

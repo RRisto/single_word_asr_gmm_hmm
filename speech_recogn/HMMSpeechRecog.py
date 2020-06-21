@@ -202,7 +202,7 @@ class HMMSpeechRecog(object):
         return predicted_labels_confs
 
     def predict_signal(self, signal, sample_rate):
-        features=self._get_features(signal, sample_rate)
+        features = self._get_features(signal, sample_rate)
         predicted_labels_confs = self._predict(features)
         return predicted_labels_confs
 
