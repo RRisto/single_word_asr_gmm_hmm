@@ -1,34 +1,34 @@
-nr of files in test set: 1216
+nr of files in test set: 1444
                              precision    recall  f1-score   support
 
-_background_noise_splitted_       1.00      1.00      1.00        18
-                       down       0.62      0.63      0.63       164
-                         go       0.57      0.73      0.64       154
-                       left       0.71      0.80      0.75       152
-                         no       0.74      0.50      0.60       162
-                        off       0.68      0.71      0.69       157
-                         on       0.81      0.79      0.80       147
-                      right       0.94      0.83      0.88       142
-                       stop       0.80      0.75      0.77       143
-                    unknown       0.45      0.51      0.47       168
-                         up       0.64      0.69      0.66       147
-                        yes       0.95      0.83      0.89       170
+_background_noise_splitted_       1.00      1.00      1.00        25
+                       down       0.91      0.83      0.87       145
+                         go       0.80      0.78      0.79       140
+                       left       0.88      0.90      0.89       166
+                         no       0.69      0.85      0.76       150
+                        off       0.86      0.77      0.81       141
+                         on       0.84      0.83      0.83       156
+                      right       0.96      0.92      0.94       167
+                       stop       0.86      0.83      0.85       145
+                    unknown       0.75      0.73      0.74       179
+                         up       0.70      0.79      0.74       124
+                        yes       0.97      0.93      0.95       186
 
-                   accuracy                           0.71      1724
-                  macro avg       0.74      0.73      0.73      1724
-               weighted avg       0.72      0.71      0.71      1724
+                   accuracy                           0.84      1724
+                  macro avg       0.85      0.85      0.85      1724
+               weighted avg       0.84      0.84      0.84      1724
 
 Confusion matrix (y-axis real label, x-axis predicted label):
-                             _background_noise_splitted_  off   go  right  stop  unknown  no  left   up  yes   on  down
-_background_noise_splitted_                           18    0    0      0     0        0   0     0    0    0    0     0
-off                                                    0  111    6      0     5        8   0     0   22    0    2     3
-go                                                     0    6  112      0     3        5  14     2    0    0    3     9
-right                                                  0    0    0    118     0       16   0     7    0    0    0     1
-stop                                                   0    6    4      0   107        8   0     3   10    1    0     4
-unknown                                                0    9   12      7     6       85   5     8    9    3   15     9
-no                                                     0    3   33      0     0       16  81     8    3    0    1    17
-left                                                   0    1    0      1     1       13   2   122    4    3    1     4
-up                                                     0   11    8      0     5        5   0     5  101    0    3     9
-yes                                                    0    3    2      0     0        8   1    14    0  141    0     1
-on                                                     0    4    3      0     0       10   0     0    8    0  116     6
-down                                                   0    9   16      0     7       16   6     3    1    0    2   104
+                             up  left  down  off  _background_noise_splitted_   no  yes  right  unknown  stop   go   on
+up                           98     3     1    5                            0    3    0      0        3     2    3    6
+left                          1   150     1    2                            0    4    2      1        5     0    0    0
+down                          1     1   120    0                            0   11    0      0        3     2    5    2
+off                          18     2     0  109                            0    1    0      0        3     0    1    7
+_background_noise_splitted_   0     0     0    0                           25    0    0      0        0     0    0    0
+no                            2     2     2    0                            0  127    1      0        6     0   10    0
+yes                           0     4     2    0                            0    3  173      0        2     2    0    0
+right                         0     5     0    0                            0    2    0    153        5     1    0    1
+unknown                       7     2     5    3                            0    7    1      5      130     6    6    7
+stop                          7     1     0    3                            0    3    2      0        5   121    1    2
+go                            4     1     1    0                            0   17    0      0        5     3  109    0
+on                            3     0     0    5                            0    7    0      1        7     3    1  129
