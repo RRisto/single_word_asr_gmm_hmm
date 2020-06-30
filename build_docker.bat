@@ -1,0 +1,1 @@
+docker build -t single_word_gmmhmm -f Dockerfile  .

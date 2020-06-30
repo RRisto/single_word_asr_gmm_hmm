@@ -19,6 +19,7 @@ models/google_hmm.pkl
 models/google_hmm_wo_data.pkl
 models/google_aligned_hmm.pkl
 models/google_hmm_aligend_wo_data.pkl
+models/google_orig_hmm.pkl.pkl
 
 # Remove previous ipynb_checkpoints
 #   git rm -r .ipynb_checkpoints/
