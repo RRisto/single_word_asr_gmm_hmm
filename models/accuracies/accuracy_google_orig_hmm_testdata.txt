@@ -1,32 +1,32 @@
                              precision    recall  f1-score   support
 
 _background_noise_splitted_       1.00      0.99      0.99       402
-                       down       0.87      0.86      0.86       406
-                         go       0.79      0.84      0.81       402
-                       left       0.94      0.91      0.92       412
-                         no       0.80      0.86      0.83       405
-                        off       0.88      0.77      0.82       402
-                         on       0.89      0.85      0.87       396
-                      right       0.93      0.91      0.92       396
-                       stop       0.93      0.89      0.91       411
-                    unknown       0.72      0.69      0.70       413
-                         up       0.72      0.84      0.78       425
-                        yes       0.95      0.95      0.95       419
+                       down       0.87      0.82      0.84       406
+                         go       0.82      0.73      0.78       402
+                       left       0.90      0.92      0.91       412
+                         no       0.74      0.88      0.80       405
+                        off       0.83      0.84      0.84       402
+                         on       0.94      0.79      0.86       396
+                      right       0.89      0.92      0.90       396
+                       stop       0.90      0.90      0.90       411
+                    unknown       0.68      0.67      0.67       413
+                         up       0.76      0.84      0.80       425
+                        yes       0.95      0.94      0.95       419
 
-                   accuracy                           0.86      4889
-                  macro avg       0.87      0.86      0.86      4889
-               weighted avg       0.87      0.86      0.86      4889
+                   accuracy                           0.85      4889
+                  macro avg       0.86      0.85      0.85      4889
+               weighted avg       0.86      0.85      0.85      4889
 
-                              down  unknown  stop   on  _background_noise_splitted_   go  yes  off  right   up   no  left
-down                          348        9     1    0                            0   19    1    0      0    8   19     1
-unknown                        14      284    12   16                            0   15    5    7     24   15   13     8
-stop                            2       16   366    0                            0    6    0    4      0   16    1     0
-on                              5       15     0  336                            0    5    0   14      2   16    2     1
-_background_noise_splitted_     0        0     0    0                          398    0    0    0      0    0    4     0
-go                             11        8     3    4                            0  337    0    2      0   13   23     1
-yes                             1        8     0    0                            0    0  397    0      2    1    6     4
-off                             0       10     0   10                            0    6    3  308      0   62    3     0
-right                           2       20     2    1                            0    1    0    0    361    2    3     4
-up                              3        7     7    8                            0   12    1   15      0  359    9     4
-no                             13        9     2    1                            0   26    0    1      0    3  348     2
-left                            1        9     1    1                            0    1   12    0      1    4    6   376
+                               up   go  _background_noise_splitted_   on  stop  right  unknown  down  yes  off  left   no
+up                           358    8                            0    2     7      2       10     2    0   24     5    7
+go                             8  295                            0    2     7      0       17    14    0    3     5   51
+_background_noise_splitted_    0    0                          397    0     0      0        0     0    0    1     0    4
+on                            27    2                            0  311     0      3       19     8    0   21     3    2
+stop                          13    5                            0    1   368      0       14     2    0    6     1    1
+right                          2    1                            0    3     2    363       18     0    0    0     4    3
+unknown                       10   10                            0   10    18     37      275     7    8   10    14   14
+down                           9   10                            0    0     0      1       13   333    1    1     4   34
+yes                            0    2                            0    0     0      0       12     2  394    0     4    5
+off                           32   10                            0    2     4      1        8     0    2  339     2    2
+left                           7    0                            0    0     1      1        9     1    8    1   378    6
+no                             3   16                            0    0     3      0       10    14    0    0     1  358

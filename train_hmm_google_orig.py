@@ -13,8 +13,8 @@ model = HMMSpeechRecog(filespath='data/audio_google_original/train', val_p=0.05,
 # model.train(7, 2, m_n_iter=100, m_num_of_mixtures=4) #83
 # model.train(7, 2, m_n_iter=100, m_num_of_mixtures=5) #84
 # model.train(7, 2, m_n_iter=100, m_num_of_mixtures=6) #85
-# model.train(7, 2, m_n_iter=100, m_num_of_mixtures=7) #86
-model.train(7, 2, m_n_iter=100, m_num_of_mixtures=8) #86
+model.train(7, 2, m_n_iter=100, m_num_of_mixtures=7) #86
+# model.train(7, 2, m_n_iter=100, m_num_of_mixtures=8) #86
 model.test('models/accuracies/accuracy_google_orig_hmm.txt')
 
 model.pickle('models/google_orig_hmm.pkl')
