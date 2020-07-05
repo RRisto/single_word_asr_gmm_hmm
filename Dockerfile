@@ -13,7 +13,7 @@ RUN apt-get install -y libblas-dev liblapack-dev libatlas-base-dev gfortran
 ARG DEBIAN_FRONTEND=noninteractive
 ENV TZ=Europe/Helsinki
 RUN apt-get -y install tzdata
-RUN apt install -y libasound-dev portaudio19-dev libportaudiocpp0
+RUN apt install -y libasound-dev portaudio19-dev libportaudiocpp0 libsndfile1-dev
 RUN pip3 install --upgrade cython
 RUN pip3 install -U scikit-learn
 

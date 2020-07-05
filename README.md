@@ -56,4 +56,15 @@ If you wan to align data and use it for training:
  - Run [1.1_generate_aligned_audio_files_risto.ipynb](https://github.com/RRisto/single_word_asr_gmm_hmm/blob/master/1.1_generate_aligned_audio_files_risto.ipynb) - this will create chunks from original audio which contain only 
  part where command was said
  - Train new model example is in [train_hmm_google_aligned.py](https://github.com/RRisto/single_word_asr_gmm_hmm/blob/master/train_hmm_google_aligned.py)
-  
+ 
+## Run docker
+There is also Docker image. To use it:
+
+- build image (run [build_docker.bat](https://github.com/RRisto/single_word_asr_gmm_hmm/blob/master/build_docker.bat))
+- run container (run [run_docker.bat](https://github.com/RRisto/single_word_asr_gmm_hmm/blob/master/run_docker.bat))
+- if you wan to use jupyter notebook:
+       
+        - go inside docker container: docker exec -it single_word_gmmhmm_run /bin/bash
+        - start jupyter notebook server jupyter notebook --ip=0.0.0.0 --port=8888 --allow-root
+        - go to your browser and copy: http://127.0.0.1:7006/
+        - from terminal you should see notebook token, copy-paste it to browser and you should be inside jupyter notebook
