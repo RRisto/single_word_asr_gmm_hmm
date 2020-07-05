@@ -26,7 +26,7 @@ You can record your own voice using record_test_audio.py
 Data should be in folders, each folder should have a name of the label/command/word spoken
 in particular directory
 - Prepare data for training and testing using [notebook](https://github.com/RRisto/single_word_asr_gmm_hmm/blob/master/2.0_prep_google_experiment.ipynb) 
-This should be similar to original [suggestions](https://arxiv.org/abs/1804.03209) how to make data for training and testing
+This should be similar to original [suggestions](https://arxiv.org/abs/1804.03209) how to make data for training and testing. Note that testing and validation file lists are in [data/]https://github.com/RRisto/single_word_asr_gmm_hmm/tree/master/data folder
 - Train model using [train_hmm_google_orig.py](https://github.com/RRisto/single_word_asr_gmm_hmm/blob/master/train_hmm_google_orig.py) or other train scripts as a template
 - Predict on test data using [predict_google_orig.py](https://github.com/RRisto/single_word_asr_gmm_hmm/blob/master/predict_google_orig.py) script
 - Test your model using microphone by running script [listen_mic_predict.py](https://github.com/RRisto/single_word_asr_gmm_hmm/blob/master/listen_mic_predict.py)
@@ -37,6 +37,7 @@ Another [script](https://github.com/RRisto/single_word_asr_gmm_hmm/blob/master/t
 ## Training very small fruit names dataset
 
 Original data, good for debugging, not very useful for real-life speech recognition.
+- unzip data [file](https://github.com/RRisto/single_word_asr_gmm_hmm/blob/master/data/audio.tar.gz)
 - Train model using [train_hmm_fruits.py](https://github.com/RRisto/single_word_asr_gmm_hmm/blob/master/train_hmm_fruits.py) or other train scripts as a template
 - Test your model using microphone by running script [listen_mic_predict.py](https://github.com/RRisto/single_word_asr_gmm_hmm/blob/master/listen_mic_predict.py) as template
 
