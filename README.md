@@ -20,6 +20,8 @@ My trained models accuracy information is in [models/accuracies](https://github.
   If you want to use them see example predict_google.py. 
 You can record your own voice using record_test_audio.py
 
+Script is tested on windows 10 using python 3.7.
+
 ## Training Google Speech Commands Dataset model (original)
 
 - Download speech data (like [Speech Command Dataset](https://www.kaggle.com/c/tensorflow-speech-recognition-challenge/data)).
