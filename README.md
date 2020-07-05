@@ -5,6 +5,8 @@ I use GMM HMM for model.
 
 ![alt text](https://github.com/RRisto/single_word_asr_gmm_hmm/blob/master/images/model.png)
 
+[This](https://medium.com/@RistoHinno/single-word-speech-recognition-892c7e01f5fc) is medium article which explaines what and how.
+
 Part of code is from https://github.com/jayaram1125/Single-Word-Speech-Recognition-using-GMM-HMM- 
 I've refactored code and added some more features:
  - added MFCC delta and delta-delta features to increase accuracy of the model
