@@ -3,7 +3,7 @@
 Idea is to generate model which could recognize single words from short speech segments. 
 I use GMM HMM for model.
 
-
+![alt text](https://github.com/RRisto/single_word_asr_gmm_hmm/blob/master/images/model.png)
 
 Part of code is from https://github.com/jayaram1125/Single-Word-Speech-Recognition-using-GMM-HMM- 
 I've refactored code and added some more features:
