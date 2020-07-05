@@ -6,11 +6,12 @@
 .ipynb_checkpoints
 */.ipynb_checkpoints/*
 
-data/audio
 data/audio_google
 data/audio_google4alignment
 data/audio_google_aligned
 data/audio_google_original
+!data/audio_google_original/original/testing_list.txt
+!data/audio_google_original/original/validation_list.txt
 
 .idea
 __pycache__
